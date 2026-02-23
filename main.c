@@ -6,7 +6,7 @@
 
 int main()
 {
-    char arr[size] = "abcd abcd abcd, ughabcd - hababcd: abcd-abcd-h abcd ";
+    char arr[size] = "abcd abcd abcd, ughabcd - hababcd: abcd-abcd-h abcd";
 
     char buff[wLen] = "abcd";
     char separators[separSize] = {' ', ',', ':', '-', '(', ')', '.'};
@@ -15,7 +15,7 @@ int main()
 
     int arrlen = strlen(arr);
     int j = 0;
-    for(int i = 0; i < arrlen || arr[i] != '\0'; i++)
+    for(int i = 0; i < arrlen || arr[i] == '\0'; i++)
     {
         int k = 0;
         for(; k < separSize && arr[i] != separators[k] && arr[i] != '\0'; k++)
