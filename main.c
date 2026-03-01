@@ -37,21 +37,22 @@ void GetAlphabetOrder(char str[256], int Order[128])
       unsigned short tmpMin = 0;
       for(int k = 0; k <= wordCounter; k++)
       {
-        if(Order[tmpMin] == 0)
+        if(Order[tmpMin] != 0)
         {
           tmpMin++;
         }
-        else if(str[indxOfWords[k] + cmpStep] < str[indxOfWords[tmpMin] + cmpStep] && Order[k] != 0)
+        else if(str[indxOfWords[k] + cmpStep] < str[indxOfWords[tmpMin] + cmpStep] && Order[k] == 0)
         {
           tmpMin = k;
         }
       }
 
-      Order[tmpMin] = i + 1;
+      if(tmpMin <= wordCounter)
+        Order[tmpMin] = i + 1;
 
       for(int k = 0; k <= wordCounter; k++)
       {
-        if(str[indxOfWords[k] + cmpStep] == str[indxOfWords[tmpMin] + cmpStep] && Order[k] != 0)
+        if(str[indxOfWords[k] + cmpStep] == str[indxOfWords[tmpMin] + cmpStep] && Order[k] == 0)
         {
           Order[k] = i + 1;
         }
