@@ -72,3 +72,7 @@ CMakeLists.txt.user*
 *.dll
 *.exe
 
+
+build/Unnamed-Debug/.qmake.stash
+
+build/Unnamed-Debug/Lab1_git

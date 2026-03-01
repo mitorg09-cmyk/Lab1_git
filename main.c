@@ -1,40 +1,67 @@
 #include <stdio.h>
 #include <string.h>
 
-void GetAlphabetOrder(char str[256], unsigned short Order[128]);
+void GetAlphabetOrder(char str[256], int Order[128]);
 
 int main()
 {
     char str1[256] = "abcd,aaaa,a,bd,hihiab,ab,aabc.";
-    unsigned short Ord[128] = {0};
+    int Ord[128] = {0};
     GetAlphabetOrder(str1, Ord);
 }
 
-void GetAlphabetOrder(char str[256], unsigned short Order[128])
+void GetAlphabetOrder(char str[256], int Order[128])
 {
-    char* ptrToWords[128] = {NULL};
-    int lenOfWords[128] = {0};
+    unsigned short indxOfWords[128] = {0};
 
     int wordCounter = 0;
-    ptrToWords[0] = str;
-    for(int i = 0; str[i] != '.' ||  str[i] != '\0'; i++)
+    indxOfWords[0] = 0;
+    for(int i = 0; str[i] != '.'; i++)
     {
-        if(str[i] != ',')
+        if(str[i] == '\0')
         {
-            lenOfWords[wordCounter]++;
+          printf("Point exception");
+          return;
         }
-        else
+
+        if(str[i] == ',')
         {
             wordCounter++;
-            ptrToWords[wordCounter] = str + i + 1;
+            indxOfWords[wordCounter] = i + 1;
         }
     }
 
-    printf("%d", (int)*ptrToWords[0]);
+    unsigned short cmpStep = 0;
+    for(int i = 0; i <= wordCounter; i++)
+    {
+      unsigned short tmpMin = 0;
+      for(int k = 0; k <= wordCounter; k++)
+      {
+        if(Order[tmpMin] == 0)
+        {
+          tmpMin++;
+        }
+        else if(str[indxOfWords[k] + cmpStep] < str[indxOfWords[tmpMin] + cmpStep] && Order[k] != 0)
+        {
+          tmpMin = k;
+        }
+      }
 
-//    for(int i = 0; ptrToWords[i] != NULL; i++)
-//    {
-//        printf("fffdddd", ptrToWords[i]);
-//  }
+      Order[tmpMin] = i + 1;
+
+      for(int k = 0; k <= wordCounter; k++)
+      {
+        if(str[indxOfWords[k] + cmpStep] == str[indxOfWords[tmpMin] + cmpStep] && Order[k] != 0)
+        {
+          Order[k] = i + 1;
+        }
+      }
+    }
+
+    for(int i = 0; i < 128; i++)
+    {
+      printf("%d \n", Order[i]);
+    }
+
 }
 
