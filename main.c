@@ -1,12 +1,22 @@
 #include <stdio.h>
 #include <stdbool.h>
+#define str0 str1
 
 int cmpStrAlphabetOrder(char* str1, char* str2, size_t l1, size_t l2);
 int ValidateFindStr(char* str1, size_t strLen, int* outMas, size_t outMasLen);
 
 int main()
 {
-  char str0[128] = "abcd,abcd,gggggg,udgngf,d,    fg  d fasdf, df ,df ,d ,d. f.d ,df...,abcd,a,ab,aaab,aa,aa,a,abcd,abcda";
+  char str1[128] = "abcd,abcd,gggggg,udgngf,d,    fg  d fasdf, df ,df ,d ,d. f.d ,df...,abcd,a,ab,aaab,aa,aa,a,abcd,abcda";
+  char str2[128] = "abcd,abcd,abcd,abcd,abcd,abcd,abcd,abcd,abcd,";
+  char str3[128] = "a,a,a,a,a";
+  char str4[128] = " a,.b,b,a., .,aa,,bb, .b.a, a,b ,a b, ,a.,ba,b,a b.a, a .b, b,b. , a.b,ba,a .b, ab, ,a.b,a. ,b b, .ab";
+  char str5[128] = "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg";
+  char str6[128] = "aaaaaa,,,,,,";
+  char str7[128] = ",,,,,,,,,aaaaaaaa";
+  char str8[128] = ",,,,,,,,,,,,,,,,,,";
+  char str9[128] = "abcd,efg,abcd,abcdd,abcda,hjhg,a.";
+  char str10[128] = "фпыпавп";
   int indxLnWrd[256] = {0};
 
   int code = 0;
@@ -25,7 +35,8 @@ int main()
       size_t lenTempFirst = indxLnWrd[i + 1];
       for(int j = i + 2; indxLnWrd[j] != -1; j += 2)
       {
-        if(cmpStrAlphabetOrder(str0 + indxLnWrd[j], tempFirst, indxLnWrd[j + 1], lenTempFirst) == 1)
+        int code1 = cmpStrAlphabetOrder(str0 + indxLnWrd[j], tempFirst, indxLnWrd[j + 1], lenTempFirst);
+        if(code1 == 1)
         {
           tempFirst = str0 + indxLnWrd[j];
           lenTempFirst = indxLnWrd[j + 1];
@@ -34,7 +45,10 @@ int main()
           indxLnWrd[i] = tempFirst - str0;
           indxLnWrd[i + 1] = lenTempFirst;
         }
-        else if
+        else if(code == 2)
+        {
+          printf("Invalid pointer or str");
+        }
       }
       for(int k = 0; k < (int)lenTempFirst; k++) printf("%c", tempFirst[k]);
       printf("\n");
