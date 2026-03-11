@@ -25,7 +25,8 @@ int main()
       size_t lenTempFirst = indxLnWrd[i + 1];
       for(int j = i + 2; indxLnWrd[j] != -1; j += 2)
       {
-        if(cmpStrAlphabetOrder(str0 + indxLnWrd[j], tempFirst, indxLnWrd[j + 1], lenTempFirst) == 1)
+        int code1 = cmpStrAlphabetOrder(str0 + indxLnWrd[j], tempFirst, indxLnWrd[j + 1], lenTempFirst);
+        if(code1 == 1)
         {
           tempFirst = str0 + indxLnWrd[j];
           lenTempFirst = indxLnWrd[j + 1];
@@ -34,7 +35,10 @@ int main()
           indxLnWrd[i] = tempFirst - str0;
           indxLnWrd[i + 1] = lenTempFirst;
         }
-        else if
+        else if(code == 2)
+        {
+          printf("Invalid pointer or str");
+        }
       }
       for(int k = 0; k < (int)lenTempFirst; k++) printf("%c", tempFirst[k]);
       printf("\n");
