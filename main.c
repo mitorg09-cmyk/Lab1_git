@@ -9,15 +9,39 @@ int main()
   char str0[128] = "abcd,abcd,gggggg,udgngf,d,    fg  d fasdf, df ,df ,d ,d. f.d ,df...,abcd,a,ab,aaab,aa,aa,a,abcd,abcda";
   int indxLnWrd[256] = {0};
 
-  ValidateFindStr(str0, 128, indxLnWrd, 256);
+  int code = 0;
+  code = ValidateFindStr(str0, 128, indxLnWrd, 256);
 
-  for(int i = 0; indxLnWrd[i] != -1; i += 2)
+  if(!code)
   {
-    for(int j = i + 2; indxLnWrd[j] != -1; j += 2)
+    // for(int i = 0; i < 256; i++)
+    // {
+    //   printf("%d \n", indxLnWrd[i]);
+    // }
+
+    for(int i = 0; indxLnWrd[i] != -1; i += 2)
     {
-      if(ValidateFindStr(str0 + indxLnWrd[i], str0 + indxLnWrd[j], indxLnWrd[i + 1], indxLnWrd[j + 1])){}
+      char* tempFirst = str0 + indxLnWrd[i];
+      size_t lenTempFirst = indxLnWrd[i + 1];
+      for(int j = i + 2; indxLnWrd[j] != -1; j += 2)
+      {
+        if(cmpStrAlphabetOrder(str0 + indxLnWrd[j], tempFirst, indxLnWrd[j + 1], lenTempFirst) == 1)
+        {
+          tempFirst = str0 + indxLnWrd[j];
+          lenTempFirst = indxLnWrd[j + 1];
+          indxLnWrd[j] = indxLnWrd[i];
+          indxLnWrd[j + 1] = indxLnWrd[i + 1];
+          indxLnWrd[i] = tempFirst - str0;
+          indxLnWrd[i + 1] = lenTempFirst;
+        }
+        else if
+      }
+      for(int k = 0; k < (int)lenTempFirst; k++) printf("%c", tempFirst[k]);
+      printf("\n");
     }
   }
+  else if(code == 1) printf("Invalid str \n");
+  else if(code == 2) printf("Out mass if too small \n");
 }
 
 int cmpStrAlphabetOrder(char* str1, char* str2, size_t l1, size_t l2)
@@ -26,8 +50,8 @@ int cmpStrAlphabetOrder(char* str1, char* str2, size_t l1, size_t l2)
   {
     for(int i = 0; ; i++)
     {
-      if(str1[i] == ',' || str1[i] == '.' || str1[i] == '\0') return 1;
-      if(str2[i] == ',' || str2[i] == '.' || str1[i] == '\0') return 0;
+      if(i == (int)l1 || str1[i] == '\0') return 1;
+      if(i == (int)l2 || str2[i] == '\0') return 0;
 
       if(str1[i] < str2[i])
       {
@@ -45,7 +69,8 @@ int cmpStrAlphabetOrder(char* str1, char* str2, size_t l1, size_t l2)
 
 int ValidateFindStr(char* str1, size_t strLen, int* outMas, size_t outMasLen) // 0 - validation success and found words; 1 - validation failure or invalid str.
 {
-  if(str1 && outMas && outMasLen >= strLen * 2)
+  if(outMasLen < strLen * 2) return 2; // 2 - outMas is too small.
+  if(str1 && outMas)
   {
     int validationTab[256] = {0}; // 0 - Invalid symbol; 1 - Valid symbol-separator; 2 - Valid symbol.
 
@@ -68,11 +93,11 @@ int ValidateFindStr(char* str1, size_t strLen, int* outMas, size_t outMasLen) //
     for(int i = 0; i < outMasLen; i++){outMas[i] = 0;}
 
     size_t len = 0;
-    for(int i = 0; str1[i + 1] != '\0'; i++)
+    for(int i = 0; str1[i] != '\0'; i++)
     {
       if(validationTab[str1[i]])
       {
-        if(validationTab[str1[i]] == 1 && validationTab[str1[i + 1]] == 2)
+        if(str1[i + 1] != '\0' && validationTab[str1[i]] == 1 && validationTab[str1[i + 1]] == 2)
         {
           outMas[wordCounter] = i + 1;
           wordCounter += 2;
@@ -86,6 +111,7 @@ int ValidateFindStr(char* str1, size_t strLen, int* outMas, size_t outMasLen) //
     }
     outMas[wordCounter] = -1;
     outMas[wordCounter + 1] = -1;
+    return 0;
   }
   else
   {
