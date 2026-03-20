@@ -30,7 +30,7 @@ int CountWordInStr(char* str1, char* word)
 {
   if(str1 && word)
   {
-    int Tab[256] = {0};
+    int Tab[256] = {0}; // 0 - Normal symbol, 1 - symbol-separator.
     Tab[(int)' '] = 1;
     Tab[(int)','] = 1;
     Tab[(int)':'] = 1;
@@ -45,36 +45,36 @@ int CountWordInStr(char* str1, char* word)
     int i = 0;
     while(str1[i] != '\0')
     {
-      if(!Tab[(unsigned char)str1[i]])
+      if(!Tab[(unsigned char)str1[i]]) // If symbol is not separator
       {
-        if(!(j == 0 && i - 1 >= 0) || Tab[(unsigned char)str1[i - 1]])
-        {
-          if(word[j] == str1[i] && word[j + 1] != '\0')
+        if(!(j == 0 && i - 1 >= 0) || Tab[(unsigned char)str1[i - 1]]) // Implication (If str1[j] is potencial begin of word and str1[i-1]
+        {                                                              // exists, that str1[i-1] must be separator).Word not is cont. of anth. word.
+          if(word[j] == str1[i] && word[j + 1] != '\0') // Equal matching symbols of str1 and word.
           {
             j++;
             i++;
           }
-          else if(word[j] == str1[i] && (str1[i + 1] == '\0' || Tab[(unsigned char)str1[i + 1]]))
-          {
-            count++;
+          else if(word[j] == str1[i] && (str1[i + 1] == '\0' || Tab[(unsigned char)str1[i + 1]])) // What is stop reason?
+          { // And word is not a beginig of another word checking.
+            count++; // Than its a word
             i++;
             j = 0;
           }
-          else if(j == 0)
+          else if(j == 0) // If begining of current word is not equeal with symbol in str1, than this symbol not in word.
           {
-            i++;
+            i++; // Checking this symbol is not reasonable, than skip sybol.
           }
-          else
+          else // Else current symbol not a begining of word, than need to check symbol as the begining.
           {
             j = 0;
           }
         }
-        else
+        else // If word is continue of another word than skip.
         {
           i++;
         }
       }
-      else
+      else // if symbol is separator than skip.
       {
         j = 0;
         i++;
