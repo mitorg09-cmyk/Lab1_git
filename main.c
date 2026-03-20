@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 #define size 256
-#define wLen 4
+#define wLen 12
 #define separSize 7
 #define arr arr0
+
+int CountWordInStr(char* str1, char* word);
 
 int main()
 {
@@ -14,45 +16,60 @@ int main()
     char arr3[size] = "abcd abcd abcd abcd"; //4
     char arr4[size] = "abcd acbd acdb abdc adcb acbd adbc acdb"; //1
     char arr5[size] = "abcd123 abcd abcd, ughabcd - hababcd: abcd-abcd-h acbd 123abcd"; //4
+    char arr6[size] = "фаавф abcd фаавф, ughabcd - haфаавфabcd: фаавф abcd-abcd-h acbd фаавф"; //4
     // For wLen == 1
-    char arr6[size] = "a a   a a a  a a  a a aa  a a a"; //12
+    char arr7[size] = "a a   a a a  a a  a a aa  a a a"; //12
 
     char buff[wLen] = "abcd";
-    char separators[separSize] = {' ', ',', ':', '-', '(', ')', '.'};
-    //int begEnd[size] = {0};
-    int count = 0;
 
-    int arrlen = strlen(arr);
+    printf("count of words is: %d \n", CountWordInStr(arr, buff));
+
+    return 0;
+}
+
+int CountWordInStr(char* str1, char* word)
+{
+  if(str1 && word)
+  {
+    int Tab[256] = {0};
+    Tab[(int)' '] = 1;
+    Tab[(int)','] = 1;
+    Tab[(int)'.'] = 1;
+    Tab[(int)'/'] = 1;
+    Tab[(int)':'] = 1;
+    Tab[(int)';'] = 1;
+    Tab[(int)'-'] = 1;
+    Tab[(int)'('] = 1;
+    Tab[(int)')'] = 1;
+
+    size_t wordLen = strlen(word);
+
+    int count = 0;
     int j = 0;
-    for(int i = 0; i < arrlen || arr[i] == '\0'; i++)
+    int i = -1;
+    do
     {
-        int k = 0;
-        for(; k < separSize && arr[i] != separators[k] && arr[i] != '\0'; k++)
+        i++;
+        if(!Tab[(unsigned char)str1[i]] && str1[i] != '\0')
         {
-        }
-        if(k == separSize)
-        {
-            j++;
+          j++;
         }
         else
         {
-          if(j == wLen)
+          if(j == wordLen)
           {
-            int cntr = i - wLen;
+            int cntr = i - wordLen;
             int m = 0;
-            for(; m < wLen && arr[cntr] == buff[m]; m++, cntr++)
-            {
-            }
-            if(m == wLen)
+            for(; m < wordLen && str1[cntr] == word[m]; m++, cntr++){}
+            if(m == wordLen)
             {
               count++;
             }
           }
           j = 0;
         }
-    }
-
-    printf("count of words is: %d \n", count);
-
-    return 0;
+    }while(str1[i] != '\0');
+    return count;
+  }
+  else return -1;
 }
