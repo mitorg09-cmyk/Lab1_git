@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #define size 256
-#define max 2147483647
-#define min -2147483648
+// #define max 2147483647
+// #define min -2147483648
 #define arr arr0
 
 int strToDecimal(char* str1, int* outNum);
@@ -46,6 +46,9 @@ int main()
 
 int strToDecimal(char* str1, int* outNum)
 {
+    const int min = -2147483648;
+    const int max = 2147483647;
+    
   if(str1 && outNum)
   {
     *outNum = 0;
